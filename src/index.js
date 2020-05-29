@@ -146,7 +146,8 @@ export default class extends Component {
     /**
      * Called when the index has changed because the user swiped.
      */
-    onIndexChanged: PropTypes.func
+    onIndexChanged: PropTypes.func,
+    nextPageEnabled: PropTypes.bool
   }
 
   /**
@@ -174,7 +175,8 @@ export default class extends Component {
     autoplayTimeout: 2.5,
     autoplayDirection: true,
     index: 0,
-    onIndexChanged: () => null
+    onIndexChanged: () => null,
+    nextPageEnabled: true
   }
 
   /**
@@ -797,7 +799,8 @@ export default class extends Component {
       loadMinimalLoader,
       renderPagination,
       showsButtons,
-      showsPagination
+      showsPagination,
+      nextPageEnabled
     } = this.props
     // let dir = state.dir
     // let key = 0
@@ -845,8 +848,12 @@ export default class extends Component {
             )
           }
         } else {
+          let extraStyles = {};
+          const lastEnabledIndex = index + (nextPageEnabled ? 1 : 0);
+          if (i > lastEnabledIndex)
+            extraStyles = { width: 0, height: 0 };
           return (
-            <View style={pageStyle} key={i}>
+            <View style={[pageStyle, extraStyles]} key={i}>
               {children[page]}
             </View>
           )
